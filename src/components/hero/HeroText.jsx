@@ -143,7 +143,7 @@ function HeroText() {
         </a>
 
         <a
-          href="linkedin.com/in/om-prakash-khuntia-49a543295"
+          href="https://www.linkedin.com/in/om-prakash-khuntia-49a543295"
           target="_blank"
           rel="noreferrer"
           className="
