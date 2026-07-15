@@ -1,49 +1,133 @@
-import { motion } from "framer-motion";
-import { FaCertificate } from "react-icons/fa";
+import { useState } from "react";
+import CertificateModal from "./CertificateModal";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
-const certificates = [
-  {
-    title: "AI/ML Internship",
-    org: "CTTC Bhubaneswar",
-  },
-  {
-    title: "Certificate Coming Soon",
-    org: "Upload Later",
-  },
-];
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+import certificates from "../data/certificates";
+import CertificateCard from "./CertificateCard";
 
 function Certificates() {
+
+  const [currentIndex, setCurrentIndex] = useState(null);
+
+  const openCertificate = (index) => {
+    setCurrentIndex(index);
+  };
+
+  const closeModal = () => {
+    setCurrentIndex(null);
+  };
+
+  const nextCertificate = () => {
+    setCurrentIndex((prev) => (prev + 1) % certificates.length);
+  };
+
+  const prevCertificate = () => {
+    setCurrentIndex((prev) =>
+      prev === 0 ? certificates.length - 1 : prev - 1
+    );
+  };
+
   return (
     <section
       id="certificates"
-      className="bg-[#0d0d0d] text-white py-24 px-6"
+      className="relative py-20 sm:py-24 lg:py-28 bg-black overflow-hidden"
     >
-      <h2 className="text-center text-5xl font-bold text-orange-500 mb-16">
-        Certificates
-      </h2>
+      {/* Background Glow */}
 
-      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+      <div className="absolute -left-40 top-20 w-80 h-80 bg-orange-500/15 blur-[120px] rounded-full"></div>
 
-        {certificates.map((item, index) => (
-          <motion.div
-            key={index}
-            whileHover={{ scale: 1.05 }}
-            className="bg-zinc-900 rounded-2xl p-8 border border-zinc-700 hover:border-orange-500 transition"
-          >
-            <FaCertificate className="text-5xl text-orange-500 mb-5" />
+      <div className="absolute right-0 bottom-0 w-[400px] h-[400px] bg-orange-500/10 blur-[160px] rounded-full"></div>
 
-            <h3 className="text-2xl font-bold">
-              {item.title}
-            </h3>
+      <div className="relative max-w-7xl mx-auto px-5 sm:px-8">
 
-            <p className="text-gray-400 mt-3">
-              {item.org}
-            </p>
+        {/* Heading */}
 
-          </motion.div>
-        ))}
+        <div className="text-center mb-12 sm:mb-16">
+
+          <h2 className="text-4xl sm:text-5xl font-bold text-white">
+            Certificates
+          </h2>
+
+          <p className="text-zinc-400 mt-4 text-base sm:text-lg max-w-2xl mx-auto">
+            Professional Certifications &
+            Continuous Learning
+          </p>
+
+        </div>
+
+        {/* Swiper */}
+
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          loop={true}
+          spaceBetween={25}
+          breakpoints={{
+            0: {
+              slidesPerView: 1,
+            },
+            640: {
+              slidesPerView: 1,
+            },
+            768: {
+              slidesPerView: 2,
+            },
+            1024: {
+              slidesPerView: 3,
+            },
+          }}
+        >
+
+          {certificates.map((certificate, index) => (
+
+            <SwiperSlide key={certificate.id}>
+
+              <div
+                onClick={() => openCertificate(index)}
+                className="cursor-pointer pb-12"
+              >
+
+                <CertificateCard certificate={certificate} />
+
+              </div>
+
+            </SwiperSlide>
+
+          ))}
+
+        </Swiper>
 
       </div>
+
+      {/* Modal */}
+
+      <CertificateModal
+        certificate={
+          currentIndex !== null
+            ? certificates[currentIndex]
+            : null
+        }
+        onClose={closeModal}
+        onNext={nextCertificate}
+        onPrev={prevCertificate}
+        current={
+          currentIndex !== null
+            ? currentIndex + 1
+            : 0
+        }
+        total={certificates.length}
+      />
+
     </section>
   );
 }

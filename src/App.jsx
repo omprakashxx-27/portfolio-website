@@ -1,24 +1,26 @@
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Skills from "./components/Skills";
+
+import AboutSection from "./components/about/AboutSection";
+import SkillsSection from "./components/skills/SkillsSection";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Certificates from "./components/Certificates";
+import HeroV2 from "./components/hero/HeroV2";
+
 
 function App() {
   return (
     <div className="bg-black text-white overflow-x-hidden">
       <Navbar />
 
-      <Hero
+      <HeroV2
         name="Om Prakash Khuntia"
         role="AI / ML Engineer"
       />
 
-      <About />
-      <Skills />
+      <AboutSection />
+      <SkillsSection />
       <Projects />
       <Certificates />
       <Contact />
